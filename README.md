@@ -1,1 +1,89 @@
-# love
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+      background: linear-gradient(180deg, #87CEEB 0%, #FFE4E1 100%);
+      animation: skyAnimation 20s infinite;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      animation: float 15s infinite linear;
+    }
+
+    .heart::before {
+      content: '❤️';
+      font-size: 24px;
+      position: absolute;
+    }
+
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      color: #FF1493;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: pulse 2s infinite;
+      text-align: center;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    @keyframes skyAnimation {
+      0%, 100% { background: linear-gradient(180deg, #87CEEB 0%, #FFE4E1 100%); }
+      50% { background: linear-gradient(180deg, #FFE4E1 0%, #87CEEB 100%); }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="message">KATALINA<br>TE AMO</div>
+
+  <script>
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(heart);
+      
+      heart.addEventListener('animationend', () => {
+        heart.remove();
+      });
+    }
+
+    // Create new hearts periodically
+    setInterval(createHeart, 800);
+
+    // Initial hearts
+    for(let i = 0; i < 15; i++) {
+      setTimeout(createHeart, Math.random() * 3000);
+    }
+  </script>
+</body>
+</html>
