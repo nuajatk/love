@@ -1,89 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      height: 100vh;
-      background: linear-gradient(180deg, #87CEEB 0%, #FFE4E1 100%);
-      animation: skyAnimation 20s infinite;
-      font-family: 'Arial', sans-serif;
-    }
-
-    .heart {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      animation: float 15s infinite linear;
-    }
-
-    .heart::before {
-      content: '❤️';
-      font-size: 24px;
-      position: absolute;
-    }
-
-    .message {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      color: #FF1493;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      animation: pulse 2s infinite;
-      text-align: center;
-      font-weight: bold;
-      background: rgba(255, 255, 255, 0.3);
-      padding: 20px;
-      border-radius: 15px;
-    }
-
-    @keyframes skyAnimation {
-      0%, 100% { background: linear-gradient(180deg, #87CEEB 0%, #FFE4E1 100%); }
-      50% { background: linear-gradient(180deg, #FFE4E1 0%, #87CEEB 100%); }
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100px) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.1); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Musical Universitario</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            transition: background-image 1s ease-in-out;
+            z-index: 1;
+        }
+        #controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        video {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-  <div class="message">KATALINA<br>TE AMO</div>
+    <div id="background"></div>
+    
+    <div id="video-container">
+        <video id="myVideo"muted>
+            <source src="ssstik.io_@whoispinkman_1727131245794.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+        </video>
+    </div>
 
-  <script>
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * window.innerWidth + 'px';
-      document.body.appendChild(heart);
-      
-      heart.addEventListener('animationend', () => {
-        heart.remove();
-      });
-    }
+    <div id="controls">
+        <audio controls id="song">
+            <source src="ssstik.io_1729655501671.mp3" type="audio/mpeg">
+           
+        </audio>
+    </div>
 
-    // Create new hearts periodically
-    setInterval(createHeart, 800);
+    <script>
+        const audio = document.getElementById('song');
+        const background = document.getElementById('background');
+        const video = document.getElementById('myVideo');
+        const images = [
+            'ruta_imagen1.jpg',
+            'ruta_imagen2.jpg',
+            'ruta_imagen3.jpg',
+            // Añade más rutas de imágenes según sea necesario
+        ];
+        let currentImage = 0;
 
-    // Initial hearts
-    for(let i = 0; i < 15; i++) {
-      setTimeout(createHeart, Math.random() * 3000);
-    }
-  </script>
+        // Intenta reproducir automáticamente
+        window.addEventListener('load', function() {
+            audio.play().catch(function(error) {
+                console.log("La reproducción automática de audio fue bloqueada por el navegador.");
+            });
+            video.play().catch(function(error) {
+                console.log("La reproducción automática de video fue bloqueada por el navegador.");
+            });
+        });
+
+        audio.addEventListener('timeupdate', function() {
+            // Cambia la imagen cada 5 segundos
+            if (Math.floor(audio.currentTime) % 5 === 0) {
+                background.style.backgroundImage = `url(${images[currentImage]})`;
+                currentImage = (currentImage + 1) % images.length;
+            }
+        });
+
+        // Sincroniza el video con el audio
+        audio.addEventListener('play', function() {
+            video.play();
+        });
+
+        audio.addEventListener('play', function() {
+            video.play();
+        });
+
+        audio.addEventListener('seeked', function() {
+            video.currentTime = audio.currentTime;
+        });
+    </script>
 </body>
 </html>
